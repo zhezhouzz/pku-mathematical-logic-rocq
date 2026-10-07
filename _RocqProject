@@ -1,0 +1,22 @@
+-Q theories LogicCourse
+
+-arg "-w notation-overridden"
+
+theories/Tactics.v
+theories/Propositional/Syntax.v
+theories/Propositional/Semantics.v
+theories/Propositional/NaturalDeduction.v
+theories/Propositional/DerivedRules.v
+theories/Propositional/Hilbert.v
+theories/FirstOrder/Syntax.v
+theories/FirstOrder/Semantics.v
+theories/FirstOrder/NaturalDeduction.v
+theories/FirstOrder/Hilbert.v
+theories/Examples/TruthTables.v
+theories/Examples/NProofs.v
+theories/Examples/PProofs.v
+theories/Examples/FirstOrder.v
+theories/Exercises/NExercises.v
+theories/Exercises/PExercises.v
+theories/Exercises/Chapter2.v
+theories/Exercises/Chapter3.v
