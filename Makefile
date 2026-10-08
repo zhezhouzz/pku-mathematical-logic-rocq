@@ -1,4 +1,4 @@
-.PHONY: build ide clean repl docker-build docker-check docker-shell
+.PHONY: build configure ide clean repl docker-build docker-check docker-shell
 
 OPAM ?= opam
 OPAM_SWITCH ?=
@@ -7,18 +7,22 @@ DOCKER ?= docker
 DOCKER_IMAGE ?= pku-mathematical-logic-rocq
 DOCKER_PLATFORM ?= linux/amd64
 
-# Build .vo files next to the teaching sources so that VsRocq can resolve
-# [Require] commands using [_RocqProject].
-RocqMakefile: _RocqProject
+# Generated Rocq makefiles contain absolute toolchain paths. Regenerate them
+# whenever the active opam switch or container may have changed.
+configure:
+	$(RM) RocqMakefile RocqMakefile.conf .RocqMakefile.d
 	$(OPAM_EXEC) rocq makefile -f _RocqProject -o RocqMakefile
 
-ide: RocqMakefile
+# Build .vo files next to the teaching sources so that VsRocq can resolve
+# [Require] commands using [_RocqProject].
+ide: configure
 	$(OPAM_EXEC) $(MAKE) -f RocqMakefile
 
 build: ide
 
-clean:
-	@if [ -f RocqMakefile ]; then $(OPAM_EXEC) $(MAKE) -f RocqMakefile clean; fi
+clean: configure
+	$(OPAM_EXEC) $(MAKE) -f RocqMakefile clean
+	$(RM) RocqMakefile RocqMakefile.conf .RocqMakefile.d
 
 repl:
 	$(OPAM_EXEC) rocq repl -Q theories LogicCourse

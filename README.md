@@ -73,6 +73,9 @@ make build
 The Makefile runs Rocq through the opam switch selected for the current
 directory. To use an existing named switch, install `rocq-prover` and
 `rocq-stdpp` in that switch and run `OPAM_SWITCH=my-rocq-switch make build`.
+Every build regenerates `RocqMakefile` and its dependency metadata because
+those generated files contain environment-specific absolute paths. It is
+therefore safe to alternate between native and bind-mounted Docker builds.
 Other native targets are:
 
 ```console
