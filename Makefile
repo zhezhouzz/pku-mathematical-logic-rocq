@@ -1,4 +1,4 @@
-.PHONY: build configure ide clean repl docker-build docker-check docker-shell
+.PHONY: build configure ide devcontainer-ide clean repl docker-build docker-check docker-shell
 
 OPAM ?= opam
 OPAM_SWITCH ?=
@@ -19,6 +19,18 @@ ide: configure
 	$(OPAM_EXEC) $(MAKE) -f RocqMakefile
 
 build: ide
+
+# A bind-mounted workspace may contain .vo files produced by another OCaml
+# toolchain. Test a central library before starting VSRocq, and rebuild only
+# when the existing object files cannot be loaded by this container.
+devcontainer-ide:
+	@if [ -f theories/Propositional/Syntax.vo ] && \
+	   ! $(OPAM_EXEC) rocq repl -batch -Q theories LogicCourse \
+	     -require-import LogicCourse.Propositional.Syntax >/dev/null 2>&1; then \
+		echo "Removing Rocq object files built by an incompatible toolchain."; \
+		$(MAKE) clean; \
+	fi
+	@$(MAKE) ide
 
 clean: configure
 	$(OPAM_EXEC) $(MAKE) -f RocqMakefile clean

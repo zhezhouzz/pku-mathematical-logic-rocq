@@ -18,5 +18,5 @@
       }
     }
   },
-  "postStartCommand": "make ide"
+  "postStartCommand": "make devcontainer-ide"
 }
