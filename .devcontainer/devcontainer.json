@@ -1,0 +1,25 @@
+{
+  "name": "PKU Mathematical Logic (Rocq)",
+  "build": {
+    "dockerfile": "../Dockerfile",
+    "context": ".."
+  },
+  "runArgs": [
+    "--platform=linux/amd64"
+  ],
+  "workspaceMount": "source=${localWorkspaceFolder},target=/home/rocq/project,type=bind,consistency=cached",
+  "workspaceFolder": "/home/rocq/project",
+  "remoteUser": "rocq",
+  "overrideCommand": true,
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "rocq-prover.vsrocq"
+      ],
+      "settings": {
+        "vsrocq.path": "/home/rocq/bin/vsrocqtop"
+      }
+    }
+  },
+  "postStartCommand": "make ide"
+}

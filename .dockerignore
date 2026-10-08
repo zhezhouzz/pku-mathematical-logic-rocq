@@ -1,5 +1,6 @@
 .git
 .gitignore
+.devcontainer
 _build
 _opam
 tmp
