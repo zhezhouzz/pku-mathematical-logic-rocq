@@ -1,9 +1,6 @@
 {
   "name": "PKU Mathematical Logic (Rocq)",
-  "build": {
-    "dockerfile": "../Dockerfile",
-    "context": ".."
-  },
+  "image": "pku-mathematical-logic-rocq:latest",
   "runArgs": [
     "--platform=linux/amd64"
   ],
