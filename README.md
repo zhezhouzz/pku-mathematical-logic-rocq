@@ -19,7 +19,8 @@ cd pku-mathematical-logic-rocq
 This method requires only [Docker](https://docs.docker.com/get-docker/). The
 image is based on the Rocq community's `rocq/rocq-prover:9.1` image and installs
 `rocq-stdpp` 1.13.0 inside the container. No host installation of OCaml, opam,
-Rocq, or std++ is required.
+Rocq, or std++ is required. The image also includes Vim, Python 3 with `pip`
+and `venv`, ripgrep, and `tree` for convenient interactive use.
 
 Build the image:
 
