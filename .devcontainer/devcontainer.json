@@ -1,6 +1,6 @@
 {
   "name": "PKU Mathematical Logic (Rocq)",
-  "image": "pku-mathematical-logic-rocq:latest",
+  "image": "zhouzhe956/pku-mathematical-logic-rocq:rocq-9.1.1",
   "runArgs": [
     "--platform=linux/amd64"
   ],

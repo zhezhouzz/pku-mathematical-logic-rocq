@@ -1,4 +1,4 @@
-FROM rocq/rocq-prover:9.1
+FROM rocq/rocq-prover:9.1.1-native-ocaml-4.14.2-flambda
 
 ARG STDPP_VERSION=1.13.0
 ARG VSROCQ_VERSION=2.3.4

@@ -4,7 +4,7 @@ OPAM ?= opam
 OPAM_SWITCH ?=
 OPAM_EXEC = $(OPAM) exec $(if $(OPAM_SWITCH),--switch=$(OPAM_SWITCH)) --
 DOCKER ?= docker
-DOCKER_IMAGE ?= pku-mathematical-logic-rocq
+DOCKER_IMAGE ?= zhouzhe956/pku-mathematical-logic-rocq:rocq-9.1.1
 DOCKER_PLATFORM ?= linux/amd64
 
 # Generated Rocq makefiles contain absolute toolchain paths. Regenerate them
