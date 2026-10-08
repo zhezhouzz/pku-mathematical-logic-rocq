@@ -7,57 +7,74 @@ explicit proof systems, and short pen-and-paper-style derivations.
 
 ## Build
 
-### Prerequisites
+Clone the repository before using either build method:
 
-The recommended setup uses [opam](https://opam.ocaml.org/) 2.1 or later and a
-project-local OCaml switch. This keeps the Rocq installation for this project
-separate from any system-wide or pre-existing Rocq installation.
-
-First install opam using the instructions for your operating system, then clone
-the repository:
-
-```sh
+```console
 git clone https://github.com/zhezhouzz/pku-mathematical-logic-rocq.git
 cd pku-mathematical-logic-rocq
 ```
 
-Initialize opam if this is its first use on the machine:
+### Docker (recommended)
 
-```sh
-opam init
+This method requires only [Docker](https://docs.docker.com/get-docker/). The
+image is based on the Rocq community's `rocq/rocq-prover:9.1` image and installs
+`rocq-stdpp` 1.13.0 inside the container. No host installation of OCaml, opam,
+Rocq, or std++ is required.
+
+Build the image:
+
+```console
+docker build --platform linux/amd64 -t pku-mathematical-logic-rocq .
 ```
 
-Create a local switch, add the official Rocq package repository, and install
-Rocq together with std++:
+The Dockerfile compiles all `.v` files while constructing the image, so a
+successful image build also verifies the complete development. To rerun the
+check without rebuilding the image:
 
-```sh
+```console
+docker run --rm --platform linux/amd64 pku-mathematical-logic-rocq
+```
+
+For an interactive shell that uses the current checkout rather than the copy
+baked into the image:
+
+```console
+docker run --rm -it \
+  --platform linux/amd64 \
+  -v "$PWD:/home/rocq/project" \
+  -w /home/rocq/project \
+  pku-mathematical-logic-rocq bash
+```
+
+The equivalent convenience targets are `make docker-build`,
+`make docker-check`, and `make docker-shell`. The explicit platform is needed
+because the official Rocq 9.1 image is currently published for `linux/amd64`;
+Docker Desktop can run it on Apple Silicon through emulation.
+
+### Native opam installation
+
+For editor integration or development without Docker, use
+[opam](https://opam.ocaml.org/) 2.1 or later and a project-local OCaml switch.
+Initialize opam once on the machine, create the switch, and install Rocq and
+std++ from the official Rocq package repository:
+
+```console
+opam init
 opam switch create . ocaml-base-compiler.4.14.2
 eval "$(opam env --switch=. --set-switch)"
 opam repo add rocq-released https://rocq-prover.org/opam/released
 opam update
 opam install rocq-prover rocq-stdpp
-```
-
-The project uses `rocq-stdpp` for finite sets and their proof automation. opam
-will select versions of Rocq and std++ that are compatible with one another.
-Confirm the installation and compile every source file with:
-
-```sh
 rocq -v
 make build
 ```
 
 The Makefile runs Rocq through the opam switch selected for the current
-directory. To use an existing named switch instead, install `rocq-prover` and
-`rocq-stdpp` in that switch and run, for example:
+directory. To use an existing named switch, install `rocq-prover` and
+`rocq-stdpp` in that switch and run `OPAM_SWITCH=my-rocq-switch make build`.
+Other native targets are:
 
-```sh
-OPAM_SWITCH=my-rocq-switch make build
-```
-
-Other useful targets are:
-
-```sh
+```console
 make ide    # build .vo files used by editor integrations
 make repl   # start a Rocq REPL with this project's logical path
 make clean  # remove generated build artifacts
@@ -68,7 +85,7 @@ make clean  # remove generated build artifacts
 For interactive use in VS Code or Cursor, install the VSRocq extension and its
 language server in the same opam switch:
 
-```sh
+```console
 opam install vsrocq-language-server
 ```
 
@@ -148,6 +165,8 @@ theories/
 - `Examples/` contains scripts intended for line-by-line classroom execution.
 - `Exercises/` contains worksheets and solutions organized around Chapters 2
   and 3 of the textbook.
+- `Dockerfile` and `.dockerignore` define the reproducible container build;
+  `Makefile` provides both native and Docker entry points.
 - [`TEXTBOOK_COVERAGE.md`](TEXTBOOK_COVERAGE.md) maps textbook sections,
   theorems, and exercises to source files.
 
@@ -216,6 +235,7 @@ built from the rules of system N.
 1. Hanpin Wang. *Mathematical Logic (Discrete Mathematics, Volume I)*
    [《数理逻辑（离散数学一分册）》]. Course textbook, in Chinese.
 2. The Rocq Prover Development Team. [The Rocq Prover documentation](https://rocq-prover.org/docs/).
-3. The std++ developers. [Rocq-std++: an extended standard library for Rocq](https://gitlab.mpi-sws.org/iris/stdpp).
-4. Haskell B. Curry and Robert Feys. *Combinatory Logic, Volume I*.
+3. The Rocq community. [Docker images of the Rocq Prover](https://github.com/rocq-community/docker-rocq).
+4. The std++ developers. [Rocq-std++: an extended standard library for Rocq](https://gitlab.mpi-sws.org/iris/stdpp).
+5. Haskell B. Curry and Robert Feys. *Combinatory Logic, Volume I*.
    North-Holland, 1958.
