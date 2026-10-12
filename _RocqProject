@@ -5,6 +5,9 @@
 theories/Tactics.v
 theories/Book/Preface.v
 theories/Book/RocqPrimer.v
+theories/Preliminaries/Sets.v
+theories/Preliminaries/RelationsFunctions.v
+theories/Preliminaries/FormalSystems.v
 theories/Book/Roadmap.v
 theories/Propositional/Syntax.v
 theories/Propositional/Semantics.v
@@ -21,5 +24,6 @@ theories/Examples/PProofs.v
 theories/Examples/FirstOrder.v
 theories/Exercises/NExercises.v
 theories/Exercises/PExercises.v
+theories/Exercises/Chapter1.v
 theories/Exercises/Chapter2.v
 theories/Exercises/Chapter3.v
