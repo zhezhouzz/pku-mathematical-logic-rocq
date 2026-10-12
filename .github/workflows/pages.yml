@@ -20,6 +20,13 @@ jobs:
     runs-on: ubuntu-latest
     container:
       image: zhouzhe956/pku-mathematical-logic-rocq:rocq-9.1.1
+      # GitHub mounts runner command files as root-owned paths.  The image
+      # remains non-root for students, but container actions need to write
+      # those paths before any project command is run.
+      options: --user root
+      env:
+        OPAMROOT: /home/rocq/.opam
+        OPAMROOTISOK: "1"
     steps:
       - uses: actions/checkout@v4
       - name: Compile the book
