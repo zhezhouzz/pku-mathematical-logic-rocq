@@ -236,6 +236,16 @@ def check() -> None:
         for needle in needles:
             if needle not in page_text:
                 raise SystemExit(f"{filename} misses expected Unicode text {needle!r}")
+
+    natural_page = OUTPUT / page_name(
+        next(c for c in chapters if c["slug"] == "SystemN")
+    )
+    natural_html = natural_page.read_text(encoding="utf-8")
+    rule_count = natural_html.count('<table class="infrule">')
+    if rule_count != 13:
+        raise SystemExit(
+            f"{natural_page.name} contains {rule_count} proof trees; expected 13"
+        )
     print(f"checked {len(list(OUTPUT.rglob('*.html')))} HTML pages")
 
 

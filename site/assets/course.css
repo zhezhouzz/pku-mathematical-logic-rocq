@@ -20,6 +20,23 @@ body {
   padding: 0 2rem 4rem;
 }
 a { color: var(--accent); }
+#main {
+  color: var(--ink);
+  font-family: "Iowan Old Style", "Noto Serif", "Noto Serif CJK SC", Georgia, serif;
+  font-size: 1rem;
+  line-height: 1.7;
+  padding: 0;
+}
+#main .doc {
+  background: transparent;
+  color: var(--ink);
+  font-family: inherit;
+  font-size: 1rem;
+  line-height: 1.7;
+  margin: 1rem 0;
+  max-width: 58rem;
+  padding: 0;
+}
 #course-nav {
   align-items: center;
   border-bottom: 1px solid var(--line);
@@ -35,17 +52,61 @@ a { color: var(--accent); }
 #page, #main { max-width: none; width: auto; }
 h1, h2, h3, h4 { color: #161a20; line-height: 1.25; }
 h1 { border-bottom: 3px solid var(--accent); padding-bottom: 0.35rem; }
-div.code, pre, code { font-family: "SFMono-Regular", Consolas, monospace; }
+/* Rocqdoc's stock CSS uses 100% line height and enlarges nested code to
+   110--120%.  That is compact for an API reference but hard to scan in a
+   textbook, especially for constructor types spanning several lines. */
+div.code, pre, code, #main .inlinecode, #main .doc .inlinecode {
+  font-family: ui-monospace, "SFMono-Regular", Menlo, Monaco, Consolas,
+    "Liberation Mono", monospace;
+}
 div.code {
   background: white;
   border: 1px solid var(--line);
   border-left: 4px solid var(--accent);
   border-radius: 0.3rem;
   color: var(--code);
+  font-size: 0.96rem;
+  line-height: 1.58;
   overflow-x: auto;
-  padding: 0.8rem 1rem;
+  padding: 1rem 1.2rem;
+  tab-size: 2;
 }
-span.inlinecode { background: var(--panel); border-radius: 0.2rem; padding: 0.08rem 0.25rem; }
+#main .inlinecode, #main .doc .inlinecode {
+  background: var(--panel);
+  border-radius: 0.2rem;
+  color: #3d426f;
+  font-size: 0.93em;
+  padding: 0.08rem 0.25rem;
+}
+.section, h2.section, h3.section, h4.section {
+  background: transparent;
+  color: #161a20;
+  padding-left: 0;
+}
+table.infrule {
+  border-collapse: collapse;
+  margin: 1.4rem auto;
+}
+#main .doc center { overflow-x: auto; }
+#main td.infrule {
+  font-family: ui-monospace, "SFMono-Regular", Menlo, Monaco, Consolas,
+    "Liberation Mono", monospace;
+  font-size: 1rem;
+  line-height: 1.5;
+  padding: 0.12rem 0.75rem;
+  white-space: nowrap;
+}
+tr.infrulemiddle hr {
+  border: 0;
+  border-top: 1.5px solid var(--ink);
+  margin: 0.25rem 0;
+}
+#main .infrulenamecol {
+  color: var(--muted);
+  font-family: system-ui, sans-serif;
+  font-size: 0.82rem;
+  padding-left: 0.8rem;
+}
 details.course-proof, details.optional-section {
   background: var(--panel);
   border: 1px solid var(--line);
