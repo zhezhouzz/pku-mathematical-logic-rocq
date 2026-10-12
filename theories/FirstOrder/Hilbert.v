@@ -1,4 +1,12 @@
-(** * First-order Hilbert system [K_L] *)
+(** * First-Order Hilbert System [K_L]
+
+    Section 3.4 extends the Hilbert calculus with quantifier axiom schemata.
+    K1--K3 are the propositional core; K4--K7 govern specialization,
+    generalization, distribution of [∀], and closure of axioms under [∀].
+
+    As in P, the derivation relation itself has only premises, axioms, and MP.
+    The apparent quantifier rules are recovered from axiom instances and
+    metatheorems. *)
 
 From Stdlib Require Import String.
 From stdpp Require Import gmap sets tactics.
@@ -160,3 +168,10 @@ Proof.
   - exact dA.
   - apply K_premise. set_solver.
 Qed.
+
+(** ** Chapter summary
+
+    [K_generalize] is the derived generalization principle and records its
+    freshness condition explicitly.  [K_deduction] repeats the SKI-style
+    bracket abstraction from system P, treating first-order axioms as closed
+    constants. *)

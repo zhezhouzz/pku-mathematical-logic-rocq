@@ -1,4 +1,16 @@
-(** * First-order natural deduction [N_L] *)
+(** * First-Order Natural Deduction [N_L]
+
+    Section 3.3 extends natural deduction with universal and existential
+    rules.  The propositional rules have the same proof-tree reading as in N;
+    the new work lies in substitution and freshness side conditions.
+
+    ** Quantifier side conditions
+
+    Universal elimination and existential introduction require [free_for] so
+    that substitution cannot capture a variable.  Universal introduction and
+    existential elimination require an eigenvariable that is absent from the
+    open assumptions (and, for elimination, from the conclusion).  These are
+    logical restrictions, not inconveniences introduced by Rocq. *)
 
 From Stdlib Require Import String.
 From stdpp Require Import gmap fin_sets sets tactics.
@@ -66,6 +78,25 @@ Definition NL_mp {Γ : Context} {A B : formula} :
   NL_impElim (Γ := Γ) (A := A) (B := B).
 Ltac nl_assumption := apply NL_assumption; set_solver.
 
+(** ** Two first quantifier proofs *)
+
+Example NL_specialization_walkthrough :
+  ({[Forall "x" syntax_Px]} : Context) ⊢ₙₗ substitute "x" syntax_c syntax_Px.
+Proof.
+  apply (NL_forallElim (x := "x") (A := syntax_Px) (t := syntax_c)).
+  - nl_assumption.
+  - reflexivity.
+Qed.
+
+Example NL_existential_witness_walkthrough :
+  ({[substitute "x" syntax_c syntax_Px]} : Context) ⊢ₙₗ
+    Exists "x" syntax_Px.
+Proof.
+  apply (NL_existsIntro (t := syntax_c)).
+  - nl_assumption.
+  - reflexivity.
+Qed.
+
 (** ** Structural metatheorems from Section 3.3 *)
 
 (** Rule 11 in the book adds one premise.  This lemma iterates that primitive
@@ -113,3 +144,10 @@ Proof.
   intros dA dB. apply (NL_cut Γ A B dA).
   apply (NL_weaken ({[A]} : Context) ({[A]} ∪ Γ) B); [set_solver|exact dB].
 Qed.
+
+(** ** Chapter summary
+
+    N_L reuses ordinary natural deduction and makes quantifier hygiene
+    explicit in constructor premises.  Weakening is iterated from the
+    primitive add-premise rule; implication introduction and elimination give
+    the one-formula form of 传递性/cut. *)

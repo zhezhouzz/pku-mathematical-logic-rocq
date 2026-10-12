@@ -1,8 +1,14 @@
-(** * First-order syntax
+(** * First-Order Syntax
 
     Names are strings and function/relation arguments are ordinary lists.  This
     keeps the first encounter with first-order syntax close to blackboard
-    notation; arity checking can be added later as an optional refinement. *)
+    notation; arity checking can be added later as an optional refinement.
+
+    ** Learning objectives
+
+    The reader should be able to distinguish terms from formulas, identify
+    free and bound occurrences, compute a capture-avoiding side condition, and
+    explain why substitution is a syntactic operation. *)
 
 From Stdlib Require Import String List Bool.
 From stdpp Require Import gmap strings.
@@ -22,6 +28,26 @@ Inductive formula : Type :=
 | Iff : formula -> formula -> formula
 | Forall : string -> formula -> formula
 | Exists : string -> formula -> formula.
+
+(** The subscript on [∀ₒ] and [∃ₒ] marks object-language quantifiers.  Rocq's
+    unadorned [forall] and [exists] remain meta-language binders. *)
+
+Declare Scope FOL_scope.
+Delimit Scope FOL_scope with FOL.
+Notation "¬ A" := (Neg A) (at level 75, right associativity) : FOL_scope.
+Notation "A ∧ B" := (Conj A B) (at level 80, right associativity) : FOL_scope.
+Notation "A ∨ B" := (Disj A B) (at level 85, right associativity) : FOL_scope.
+Notation "A → B" := (Imp A B) (at level 99, right associativity) : FOL_scope.
+Notation "A ↔ B" := (Iff A B) (at level 95, no associativity) : FOL_scope.
+Notation "∀ₒ x , A" := (Forall x A) (at level 200, x constr, right associativity) : FOL_scope.
+Notation "∃ₒ x , A" := (Exists x A) (at level 200, x constr, right associativity) : FOL_scope.
+
+(** ** Optional implementation interlude: finite-set keys
+
+    The next encodings provide decidable equality and [Countable] instances for
+    std++ finite sets.  They are implementation infrastructure, not part of
+    first-order syntax as presented in the textbook.  Readers may continue at
+    _Free variables and substitution_ below. *)
 
 Fixpoint term_to_tree (t : term) : gen_tree string :=
   match t with
@@ -157,15 +183,7 @@ Global Instance formula_countable : Countable formula :=
 
 Definition Context : Type := gset formula.
 
-Declare Scope FOL_scope.
-Delimit Scope FOL_scope with FOL.
-Notation "¬ A" := (Neg A) (at level 75, right associativity) : FOL_scope.
-Notation "A ∧ B" := (Conj A B) (at level 80, right associativity) : FOL_scope.
-Notation "A ∨ B" := (Disj A B) (at level 85, right associativity) : FOL_scope.
-Notation "A → B" := (Imp A B) (at level 99, right associativity) : FOL_scope.
-Notation "A ↔ B" := (Iff A B) (at level 95, no associativity) : FOL_scope.
-Notation "∀ₒ x , A" := (Forall x A) (at level 200, x constr, right associativity) : FOL_scope.
-Notation "∃ₒ x , A" := (Exists x A) (at level 200, x constr, right associativity) : FOL_scope.
+(** ** Free variables and substitution *)
 
 Fixpoint term_free_variables (t : term) : gset string :=
   match t with
@@ -215,3 +233,27 @@ Fixpoint free_for (t : term) (x : string) (A : formula) : bool :=
       else (bool_decide (x ∉ free_variables B) ||
             bool_decide (y ∉ term_free_variables t)) && free_for t x B
   end.
+
+(** ** Executable examples *)
+
+Open Scope string_scope.
+Open Scope FOL_scope.
+
+Definition syntax_x : term := Var "x".
+Definition syntax_y : term := Var "y".
+Definition syntax_c : term := Func "c" [].
+Definition syntax_Px : formula := Rel "P" [syntax_x].
+
+Compute free_variables (∀ₒ "x", syntax_Px).
+Compute substitute "x" syntax_c syntax_Px.
+Compute free_for syntax_y "x" (∀ₒ "y", syntax_Px).
+
+(** The last computation is false: replacing free [x] by [y] underneath a
+    quantifier binding [y] would capture the inserted variable.
+
+    ** Chapter summary
+
+    Terms and formulas are syntax trees.  Quantifiers remove variables from
+    the free-variable set, substitution stops beneath a binder for the same
+    variable, and [free_for] checks that another binder cannot capture a free
+    variable introduced by substitution. *)

@@ -1,4 +1,12 @@
-(** * Tarski semantics for first-order formulas *)
+(** * Tarski Semantics for First-Order Formulas
+
+    Section 3.6 interprets syntax inside a mathematical structure.  In
+    contrast with propositional truth tables, the domain may be infinite and
+    satisfaction is a Rocq proposition rather than a Boolean enumeration.
+
+    A model interprets function and relation symbols; an assignment interprets
+    variables.  Keeping these responsibilities separate is essential when a
+    quantified formula changes one variable while preserving the model. *)
 
 From Stdlib Require Import String List.
 From stdpp Require Import gmap.
@@ -39,3 +47,18 @@ Definition semantic_consequence (Γ : Context) (A : formula) : Prop :=
     (forall B, B ∈ Γ -> satisfies M ρ B) -> satisfies M ρ A.
 
 Notation "Γ ⊨ A" := (semantic_consequence Γ A) (at level 74) : FOL_scope.
+
+(** ** Propositional and first-order semantics compared
+
+    A propositional valuation maps atom names directly to Booleans.  A
+    first-order assignment maps variables to domain elements, while [model]
+    supplies the meanings of nonlogical symbols.  Consequently [satisfies]
+    returns [Prop], and [semantic_consequence] quantifies over every domain,
+    model, and assignment.
+
+    ** Chapter summary
+
+    [term_eval] interprets terms, [satisfies] follows the structure of a
+    formula, and [update] gives bound variables their quantified values.  The
+    semantic judgment [Γ ⊨ A] remains distinct from both [Γ ⊢ₙₗ A] and
+    [Γ ⊢ₖ A]. *)

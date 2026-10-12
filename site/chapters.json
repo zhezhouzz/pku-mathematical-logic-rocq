@@ -112,10 +112,24 @@
     "slug": "SystemKL"
   },
   {
+    "source": "theories/FirstOrder/Connections.v",
+    "title": "N_L and K_L",
+    "part": "First-Order Logic",
+    "textbook": "Section 3.5",
+    "slug": "FirstOrderConnections"
+  },
+  {
     "source": "theories/FirstOrder/Semantics.v",
     "title": "First-Order Semantics",
     "part": "First-Order Logic",
     "textbook": "Section 3.6",
     "slug": "FirstOrderSemantics"
+  },
+  {
+    "source": "theories/FirstOrder/Metatheory.v",
+    "title": "First-Order Metatheory Roadmap",
+    "part": "First-Order Logic",
+    "textbook": "Sections 3.7--3.8",
+    "slug": "FirstOrderMetatheory"
   }
 ]

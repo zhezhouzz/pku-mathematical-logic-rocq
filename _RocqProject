@@ -16,9 +16,11 @@ theories/Propositional/DerivedRules.v
 theories/Propositional/Hilbert.v
 theories/Propositional/Connections.v
 theories/FirstOrder/Syntax.v
-theories/FirstOrder/Semantics.v
 theories/FirstOrder/NaturalDeduction.v
 theories/FirstOrder/Hilbert.v
+theories/FirstOrder/Connections.v
+theories/FirstOrder/Semantics.v
+theories/FirstOrder/Metatheory.v
 theories/Examples/TruthTables.v
 theories/Examples/NProofs.v
 theories/Examples/PProofs.v
