@@ -7,6 +7,7 @@ import argparse
 import datetime as dt
 import html
 import json
+import os
 import re
 import shutil
 import subprocess
@@ -56,12 +57,16 @@ def run(command: list[str]) -> None:
 
 
 def git_metadata() -> tuple[str, str]:
-    try:
-        commit = subprocess.check_output(
-            ["git", "rev-parse", "--short", "HEAD"], cwd=ROOT, text=True
-        ).strip()
-    except (OSError, subprocess.CalledProcessError):
-        commit = "unknown"
+    github_sha = os.environ.get("GITHUB_SHA", "").strip()
+    if github_sha:
+        commit = github_sha[:7]
+    else:
+        try:
+            commit = subprocess.check_output(
+                ["git", "rev-parse", "--short", "HEAD"], cwd=ROOT, text=True
+            ).strip()
+        except (OSError, subprocess.CalledProcessError):
+            commit = "unknown"
     build_date = dt.datetime.now(dt.timezone.utc).date().isoformat()
     return commit, build_date
 
