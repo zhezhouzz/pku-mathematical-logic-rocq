@@ -1,4 +1,14 @@
-(** * System P: Hilbert-style propositional calculus *)
+(** * System P: Hilbert-Style Propositional Calculus
+
+    Section 2.6 presents a deliberately austere calculus.  Only negation and
+    implication are primitive, and every derivation uses premises, three axiom
+    schemata, and modus ponens.
+
+    ** Learning objectives
+
+    The reader should be able to instantiate A1--A3, construct a derivation by
+    MP, distinguish primitive from defined connectives, and state the
+    deduction theorem. *)
 
 From Stdlib Require Import String List.
 From stdpp Require Import gmap strings sets tactics.
@@ -10,6 +20,10 @@ Inductive pformula : Type :=
 | PAtom : string -> pformula
 | PNeg : pformula -> pformula
 | PImp : pformula -> pformula -> pformula.
+
+(** System P has a separate syntax rather than silently restricting system N.
+    Separate scopes let both languages print the usual symbols while their
+    constructors remain unambiguous. *)
 
 Global Instance pformula_eq_dec : EqDecision pformula.
 Proof. solve_decision. Defined.
@@ -83,6 +97,9 @@ Inductive PDerivation : PContext -> pformula -> Prop :=
     PDerivation Γ ((¬ A → ¬ B) → (B → A))
 | P_mp {Γ : PContext} {A B : pformula} :
     PDerivation Γ A -> PDerivation Γ (A → B) -> PDerivation Γ B.
+
+(** Read [P_mp dA dAB] from left to right as: a proof of [A], a proof of
+    [A → B], therefore a proof of [B]. *)
 
 Notation "Γ ⊢ₚ A" := (PDerivation Γ A) (at level 74).
 
@@ -200,3 +217,18 @@ Proof.
   - exact dA.
   - apply P_premise. set_solver.
 Qed.
+
+(** ** Optional perspective: combinatory logic
+
+    A1 has the type of the K combinator and A2 has the type of S.  The proof of
+    [P_identity] constructs I as [S K K].  More generally,
+    [P_deduction_aux] removes one distinguished assumption by the same three
+    cases as bracket abstraction from lambda terms to SKI.  This observation
+    explains the shape of the proof; no lambda-calculus machinery is required
+    elsewhere in the course.
+
+    ** Chapter summary
+
+    P trades the many natural-deduction rules for three schematic axioms and
+    MP.  The deduction theorem recovers implication introduction as a
+    metatheorem rather than a primitive inference rule. *)

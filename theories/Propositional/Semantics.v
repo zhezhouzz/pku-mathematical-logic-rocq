@@ -1,4 +1,14 @@
-(** * Truth-table semantics *)
+(** * Truth-Table Semantics
+
+    Sections 2.2 and 2.3 assign a truth value to every formula after the atoms
+    have received values.  Unlike derivability, this chapter is executable:
+    every definition returns finite Boolean data.
+
+    ** Learning objectives
+
+    The reader should be able to evaluate a formula, read the generated truth
+    table, distinguish validity from satisfiability, and explain semantic
+    consequence [Γ ⊨ A]. *)
 
 From Stdlib Require Import String List Bool.
 From stdpp Require Import gmap fin_sets.
@@ -6,6 +16,7 @@ From LogicCourse.Propositional Require Import Syntax.
 
 Import ListNotations.
 Open Scope string_scope.
+Open Scope N_scope.
 
 Definition valuation : Type := string -> bool.
 
@@ -84,3 +95,35 @@ Definition printTruthTable (A : formula) : list string :=
                 " || " ++ formula_to_string A in
   header :: map (fun row => print_assignment row ++ " || " ++ show_value (result row))
                 (rows table).
+
+(** ** Running a truth table
+
+    Predict each row before evaluating the following command in VSRocq. *)
+
+Definition semantics_p : formula := Atom "p".
+Definition semantics_q : formula := Atom "q".
+
+Compute printTruthTable (semantics_p → semantics_p).
+Compute printTruthTable ((semantics_p → semantics_q) ↔
+                         ((¬ semantics_q) → (¬ semantics_p))).
+
+(** [isValid] universally checks all rows; [isSatisfiable] existentially
+    checks them.  A contradiction has no satisfying row. *)
+
+Compute isValid (semantics_p ∨ (¬ semantics_p)).
+Compute isSatisfiable (semantics_p ∧ (¬ semantics_p)).
+
+(** ** Semantic consequence versus derivability
+
+    [Γ ⊨ A] asks whether every valuation satisfying [Γ] also makes [A] true.
+    It performs a finite semantic computation.  The later judgment [Γ ⊢ₙ A]
+    instead asks for a derivation tree assembled from inference rules.  A
+    soundness theorem would connect the two, but the notions are not equal by
+    definition.
+
+    ** Chapter summary
+
+    Syntax supplies the tree; a valuation supplies atomic truth values; [eval]
+    combines them recursively.  Validity quantifies over all rows,
+    satisfiability over at least one row, and consequence restricts attention
+    to rows satisfying the assumptions. *)

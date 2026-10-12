@@ -1,8 +1,14 @@
-(** * Propositional formulas
+(** * Propositional Syntax
 
     Formulas are ordinary Rocq data.  This is a deliberately small deep
     embedding intended for the first chapters of a mathematical logic course.
-    All five textbook connectives are primitive in system N. *)
+    All five textbook connectives are primitive in system N.
+
+    ** Learning objectives
+
+    The reader should be able to distinguish an object-language formula from
+    a Rocq proposition, construct formulas with textbook notation, and compute
+    their complexity, depth, and variable set. *)
 
 From Stdlib Require Import String List Bool Arith.
 From stdpp Require Import gmap strings.
@@ -17,6 +23,81 @@ Inductive formula : Type :=
 | Disj : formula -> formula -> formula
 | Imp  : formula -> formula -> formula
 | Iff  : formula -> formula -> formula.
+
+(** [formula] is syntax, not truth.  For example, [Imp (Atom "p") (Atom
+    "q")] is a tree that can later be evaluated under many valuations. *)
+
+Declare Scope N_scope.
+Delimit Scope N_scope with N.
+Notation "¬ A" := (Neg A) (at level 75, right associativity) : N_scope.
+Notation "A ∧ B" := (Conj A B) (at level 80, right associativity) : N_scope.
+Notation "A ∨ B" := (Disj A B) (at level 85, right associativity) : N_scope.
+Notation "A → B" := (Imp A B) (at level 99, right associativity) : N_scope.
+Notation "A ↔ B" := (Iff A B) (at level 95, no associativity) : N_scope.
+
+Open Scope N_scope.
+
+Definition syntax_p : formula := Atom "p".
+Definition syntax_q : formula := Atom "q".
+
+Check (syntax_p → (¬ syntax_q)).
+
+(** ** Structural measures *)
+
+Fixpoint complexity (A : formula) : nat :=
+  match A with
+  | Atom _ => 0
+  | Neg B => S (complexity B)
+  | Conj B C | Disj B C | Imp B C | Iff B C =>
+      S (complexity B + complexity C)
+  end.
+
+Fixpoint depth (A : formula) : nat :=
+  match A with
+  | Atom _ => 0
+  | Neg B => S (depth B)
+  | Conj B C | Disj B C | Imp B C | Iff B C =>
+      S (Nat.max (depth B) (depth C))
+  end.
+
+Compute complexity (syntax_p → (¬ syntax_q)).
+Compute depth (syntax_p → (¬ syntax_q)).
+
+Fixpoint variable_set (A : formula) : gset string :=
+  match A with
+  | Atom p => {[ p ]}
+  | Neg B => variable_set B
+  | Conj B C | Disj B C | Imp B C | Iff B C =>
+      variable_set B ∪ variable_set C
+  end.
+
+Fixpoint uses_only_neg_imp (A : formula) : bool :=
+  match A with
+  | Atom _ => true
+  | Neg B => uses_only_neg_imp B
+  | Imp B C => uses_only_neg_imp B && uses_only_neg_imp C
+  | _ => false
+  end.
+
+(** Short names are convenient in examples. *)
+Definition atom (name : string) : formula := Atom name.
+
+Fixpoint formula_to_string (A : formula) : string :=
+  match A with
+  | Atom p => p
+  | Neg B => "¬(" ++ formula_to_string B ++ ")"
+  | Conj B C => "(" ++ formula_to_string B ++ " ∧ " ++ formula_to_string C ++ ")"
+  | Disj B C => "(" ++ formula_to_string B ++ " ∨ " ++ formula_to_string C ++ ")"
+  | Imp B C => "(" ++ formula_to_string B ++ " → " ++ formula_to_string C ++ ")"
+  | Iff B C => "(" ++ formula_to_string B ++ " ↔ " ++ formula_to_string C ++ ")"
+  end.
+
+(** ** Optional implementation interlude: finite-set keys
+
+    Readers interested only in logic may skip this section.  std++ implements
+    [gset formula] with a finite map, so formulas need decidable equality and a
+    countable encoding.  The encoding below is infrastructure: it does not add
+    a logical axiom or change the meaning of a formula. *)
 
 Global Instance formula_eq_dec : EqDecision formula.
 Proof. solve_decision. Defined.
@@ -60,58 +141,16 @@ Qed.
 Global Instance formula_countable : Countable formula :=
   inj_countable formula_to_tree formula_of_tree formula_tree_round_trip.
 
-(** A finite set of assumptions. *)
+(** ** Finite contexts
+
+    With the two infrastructure instances available, a context can be a finite
+    set of formulas.  Sets deliberately forget order and duplicates, matching
+    the structural treatment in the textbook. *)
 Definition Context : Type := gset formula.
 
-Declare Scope N_scope.
-Delimit Scope N_scope with N.
-Notation "¬ A" := (Neg A) (at level 75, right associativity) : N_scope.
-Notation "A ∧ B" := (Conj A B) (at level 80, right associativity) : N_scope.
-Notation "A ∨ B" := (Disj A B) (at level 85, right associativity) : N_scope.
-Notation "A → B" := (Imp A B) (at level 99, right associativity) : N_scope.
-Notation "A ↔ B" := (Iff A B) (at level 95, no associativity) : N_scope.
+(** ** Chapter summary
 
-Fixpoint complexity (A : formula) : nat :=
-  match A with
-  | Atom _ => 0
-  | Neg B => S (complexity B)
-  | Conj B C | Disj B C | Imp B C | Iff B C =>
-      S (complexity B + complexity C)
-  end.
-
-Fixpoint depth (A : formula) : nat :=
-  match A with
-  | Atom _ => 0
-  | Neg B => S (depth B)
-  | Conj B C | Disj B C | Imp B C | Iff B C =>
-      S (Nat.max (depth B) (depth C))
-  end.
-
-Fixpoint variable_set (A : formula) : gset string :=
-  match A with
-  | Atom p => {[ p ]}
-  | Neg B => variable_set B
-  | Conj B C | Disj B C | Imp B C | Iff B C =>
-      variable_set B ∪ variable_set C
-  end.
-
-Fixpoint uses_only_neg_imp (A : formula) : bool :=
-  match A with
-  | Atom _ => true
-  | Neg B => uses_only_neg_imp B
-  | Imp B C => uses_only_neg_imp B && uses_only_neg_imp C
-  | _ => false
-  end.
-
-(** Short names are convenient in examples. *)
-Definition atom (name : string) : formula := Atom name.
-
-Fixpoint formula_to_string (A : formula) : string :=
-  match A with
-  | Atom p => p
-  | Neg B => "¬(" ++ formula_to_string B ++ ")"
-  | Conj B C => "(" ++ formula_to_string B ++ " ∧ " ++ formula_to_string C ++ ")"
-  | Disj B C => "(" ++ formula_to_string B ++ " ∨ " ++ formula_to_string C ++ ")"
-  | Imp B C => "(" ++ formula_to_string B ++ " → " ++ formula_to_string C ++ ")"
-  | Iff B C => "(" ++ formula_to_string B ++ " ↔ " ++ formula_to_string C ++ ")"
-  end.
+    Formulas are inspectable syntax trees.  Structural recursion defines their
+    measures and variables, while [Context] records a finite set of open
+    assumptions.  Truth is intentionally absent from this chapter and is
+    supplied by valuations in Section 2.2. *)

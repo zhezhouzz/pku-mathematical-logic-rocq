@@ -1,7 +1,9 @@
 (** * Frequently used derived rules in Section 2.5
 
     These are proved once from the primitive rules of N, so later classroom
-    proofs can use the same abbreviations as the textbook. *)
+    proofs can use the same abbreviations as the textbook.  A derived rule is
+    not a new axiom: opening a folded proof in the online edition reveals the
+    primitive inference tree that justifies it. *)
 
 From stdpp Require Import gmap sets tactics.
 From LogicCourse.Propositional Require Import Syntax NaturalDeduction.
@@ -109,3 +111,10 @@ Proof.
     + now apply N_add_premise.
     + n_assumption.
 Qed.
+
+(** ** Chapter summary
+
+    Identity, explosion, double negation, reductio, modus tollens, implication
+    transitivity, and commutativity can all be derived without extending N.
+    The distinction between primitive and admissible rules becomes important
+    when comparing proof systems. *)

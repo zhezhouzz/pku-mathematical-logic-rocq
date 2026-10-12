@@ -5,7 +5,18 @@
     Formula and context indices are implicit whenever they can be recovered
     from the conclusion or from a derivation premise.  A user can still select
     an unresolved intermediate formula with a named argument such as
-    [N_impElim (A := A)]. *)
+    [N_impElim (A := A)].
+
+    This chapter covers Sections 2.4 and 2.5.  Its central idea is that a proof
+    is data: an inhabitant of [NDerivation Γ A] records a complete inference
+    tree concluding [A] from assumptions [Γ].
+
+    ** Reading the rules
+
+    Each constructor below is one horizontal rule from the textbook.  Its
+    derivation arguments are the premises above the line and its result is the
+    conclusion below the line.  Introduction rules build a connective;
+    elimination rules consume it. *)
 
 From stdpp Require Import gmap sets tactics.
 From LogicCourse.Propositional Require Import Syntax.
@@ -59,6 +70,30 @@ Definition N_byContradiction {Γ : Context} {A B : formula} :
 
 (** Closes a goal whose conclusion is literally among the assumptions. *)
 Ltac n_assumption := apply N_assumption; set_solver.
+
+(** ** From a paper proof to Rocq
+
+    The paper derivation
+
+    [[
+          A ⊢ A
+        -------- →I
+          ⊢ A → A
+    ]]
+
+    becomes one application of implication introduction followed by the
+    assumption rule. *)
+
+Example N_identity_walkthrough (A : formula) : (∅ : Context) ⊢ₙ (A → A).
+Proof.
+  apply N_impIntro.
+  n_assumption.
+Qed.
+
+(** If an elimination rule contains an intermediate formula that is not fixed
+    by the goal, name it explicitly, for example
+    [apply (N_impElim (A := A))].  [About N_impElim.] displays the full rule in
+    the editor. *)
 
 (** ** Metatheorems from Section 2.5 *)
 
@@ -177,3 +212,10 @@ Proof.
   - exact dA.
   - apply N_assumption. set_solver.
 Qed.
+
+(** ** Chapter summary
+
+    Primitive constructors are the inference rules students should use in
+    first proofs.  [N_weaken] formalizes 增加前提律, while [N_substitution] and
+    [N_cut] formalize replacement of open assumptions by derivations.  The next
+    chapter packages frequently repeated proof trees as derived rules. *)
