@@ -9,6 +9,7 @@ theories/Preliminaries/Sets.v
 theories/Preliminaries/RelationsFunctions.v
 theories/Preliminaries/FormalSystems.v
 theories/Book/Roadmap.v
+theories/Book/NotationAndImplementation.v
 theories/Propositional/Syntax.v
 theories/Propositional/Semantics.v
 theories/Propositional/NaturalDeduction.v
@@ -30,3 +31,7 @@ theories/Exercises/PExercises.v
 theories/Exercises/Chapter1.v
 theories/Exercises/Chapter2.v
 theories/Exercises/Chapter3.v
+theories/Solutions/Selected.v
+theories/Tests/Chapter1Test.v
+theories/Tests/Chapter2Test.v
+theories/Tests/Chapter3Test.v

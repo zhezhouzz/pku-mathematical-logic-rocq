@@ -1,8 +1,9 @@
-(** * 教材习题三（pp. 183--187）
+(** * Chapter 3 Exercises / 教材习题三 (pp. 183--187)
 
-    与第二章 worksheet 相同：证明题保留为 [Abort]，语法计算可以
-    逐句执行。模型构造、前束范式计算和开放讨论题保留教材编号与
-    任务说明，供纸笔作业或以后扩展自动化。 *)
+    As in Chapter 2, proof goals ending in [Abort] are student work and syntax
+    computations can be run one sentence at a time.  Model construction,
+    prenex normal forms, and open metatheory retain their textbook numbers as
+    paper assignments or future automation projects. *)
 
 From Stdlib Require Import String List Bool.
 From stdpp Require Import gmap.
@@ -16,7 +17,9 @@ Open Scope FOL_scope.
 (** 1. 将十二个数学命题表示为一阶公式，并明确非逻辑符号集。
     2. 用一阶语言描述偏序关系。 *)
 
-(** 3--5. 自由/约束出现、代换、闭公式。这里提供同类可运行实例。 *)
+(** **** Exercise: 1 star, standard (chapter3_syntax_computations)
+
+    Problems 3--5: free/bound occurrences, substitution, and sentences. *)
 Definition ex_x1 : term := Var "x1".
 Definition ex_x2 : term := Var "x2".
 Definition ex_x3 : term := Var "x3".
@@ -34,7 +37,9 @@ Section NLExercises.
   Variables A A' B C : formula.
   Variables x y : string.
 
-  (** 6. 改名：若 y 对 x 在 A 中自由，则 ∀xA ⊢ ∀y A(x/y)。 *)
+  (** **** Exercise: 2 stars, standard (chapter3_NL_renaming)
+
+      Problem 6. 改名：若 y 对 x 在 A 中自由，则 ∀xA ⊢ ∀y A(x/y)。 *)
   Goal free_for (Var y) x A = true ->
     ({[Forall x A]} : Context) ⊢ₙₗ Forall y (substitute x (Var y) A).
   Abort.
@@ -105,7 +110,9 @@ Section KExercises.
   Variables A B C : formula.
   Variable x : string.
 
-  (** 20. 在 K_L 中证明。 *)
+  (** **** Exercise: 3 stars, standard (chapter3_KL_sequences)
+
+      Problem 20: construct the following derivations in K_L. *)
   Goal (∅ : Context) ⊢ₖ
     (Disj (Exists x A) (Exists x B) → Exists x (Disj A B)). Abort.
   Goal (∅ : Context) ⊢ₖ

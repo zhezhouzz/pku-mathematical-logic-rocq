@@ -183,8 +183,15 @@ HREF = re.compile(r'href=["\']([^"\']+)["\']')
 
 def check() -> None:
     chapters = load_chapters()
-    expected = [OUTPUT / "index.html", OUTPUT / "coqindex.html", OUTPUT / "exercises.html"]
+    expected = [
+        OUTPUT / "index.html",
+        OUTPUT / "coqindex.html",
+        OUTPUT / "exercises.html",
+        OUTPUT / "assets" / "course.css",
+        OUTPUT / "assets" / "course.js",
+    ]
     expected.extend(OUTPUT / page_name(chapter) for chapter in chapters)
+    expected.extend(OUTPUT / "src" / chapter["source"] for chapter in chapters)
     missing = [str(path.relative_to(ROOT)) for path in expected if not path.exists()]
     if missing:
         raise SystemExit("missing generated pages: " + ", ".join(missing))
@@ -205,6 +212,25 @@ def check() -> None:
     for needle in required_text:
         if needle not in home:
             raise SystemExit(f"generated home page misses {needle!r}")
+
+    # These checks are intentionally small smoke tests: together they catch a
+    # wrong output encoding, missing bilingual prose, or a build that emitted
+    # declarations without the course's judgment notation.
+    content_checks = {
+        page_name(next(c for c in chapters if c["slug"] == "SystemN")): [
+            "⊢ₙ",
+            "→",
+        ],
+        page_name(next(c for c in chapters if c["slug"] == "NotationReference")): [
+            "semantic consequence",
+            "语义后承",
+        ],
+    }
+    for filename, needles in content_checks.items():
+        page_text = (OUTPUT / filename).read_text(encoding="utf-8")
+        for needle in needles:
+            if needle not in page_text:
+                raise SystemExit(f"{filename} misses expected Unicode text {needle!r}")
     print(f"checked {len(list(OUTPUT.rglob('*.html')))} HTML pages")
 
 

@@ -31,7 +31,8 @@ book: build core-check
 core-check:
 	@if rg -n '(^|[[:space:]])(Admitted|admit|Axiom)([[:space:].]|$$)' \
 	  theories/Book theories/Preliminaries theories/Propositional \
-	  theories/FirstOrder theories/Examples theories/Tactics.v; then \
+	  theories/FirstOrder theories/Examples theories/Solutions theories/Tests \
+	  theories/Tactics.v; then \
 		echo "Unexpected admission or axiom in the trusted teaching library."; \
 		exit 1; \
 	fi

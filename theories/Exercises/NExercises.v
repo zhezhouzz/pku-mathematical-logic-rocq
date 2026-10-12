@@ -1,4 +1,4 @@
-(** * System N exercises
+(** * System N Exercises
 
     Replace [Abort] by a proof.  Useful first commands are [apply], [exact],
     and [n_assumption]. *)
@@ -9,6 +9,7 @@ From LogicCourse.Propositional Require Import Syntax NaturalDeduction.
 
 Open Scope N_scope.
 
+(** **** Exercise: 1 star, standard (exercise1) *)
 Example exercise1 (A B : formula): (∅ : Context) ⊢ₙ ((A ∧ B) → (B ∧ A)).
 Proof.
   apply N_impIntro.
@@ -26,6 +27,7 @@ Proof.
   apply N_impIntro. normalize_context. exact line3.
 Qed.
 
+(** **** Exercise: 1 star, standard (exercise2) *)
 Example exercise2 (A B : formula): (∅ : Context) ⊢ₙ (A → (A ∨ B)).
 Proof.
   apply N_impIntro.
@@ -40,6 +42,7 @@ Proof.
   apply N_impIntro. normalize_context. exact line1.
 Qed.
 
+(** **** Exercise: 2 stars, standard (exercise3) *)
 Example exercise3 (Γ : Context) (A B C : formula):
   {[(A → B); (B → C); A]} ⊢ₙ C.
 Proof.

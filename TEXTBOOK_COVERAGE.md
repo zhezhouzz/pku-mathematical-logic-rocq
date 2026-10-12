@@ -6,6 +6,16 @@
 - **学生练习**：在 worksheet 中以 `Goal ... Abort.` 留空；
 - **纸笔/后续**：保留教材编号和任务说明，但暂不引入复杂自动化或元理论。
 
+## 第一章：预备知识
+
+| 教材内容 | Rocq 文件 | 状态 |
+|---|---|---|
+| 1.1 集合论的基本概念 | `Preliminaries/Sets.v` | 有限集合操作和可执行例子 |
+| 1.2 关系和函数 | `Preliminaries/RelationsFunctions.v` | 关系、复合、单射、满射、双射 |
+| 1.3 集合的势 | `Preliminaries/Sets.v` | 有限 cardinality；无限基数保留为概念说明 |
+| 1.4 形式系统 | `Preliminaries/FormalSystems.v` | 小型 deep embedding 与推演树 |
+| 练习一 | `Exercises/Chapter1.v` | Rocq 练习和纸笔题 |
+
 ## 第二章：命题逻辑
 
 | 教材内容 | Rocq 文件 | 状态 |
@@ -40,3 +50,9 @@
 `Exercises/Chapter2.v` 和 `Exercises/Chapter3.v` 中把某个 `Abort` 改成
 `Proof. ... Qed.`。这样同一份代码同时保留“规则库”和“无答案练习册”，又不会把
 可靠性、完备性等较重内容提前塞进基础课堂。
+
+## 在线教材
+
+`site/chapters.json` 按原书前三章规定网页顺序。`make html-check` 使用
+`rocq doc` 生成并检查静态网页；GitHub Pages 在 `main` 更新后自动发布。
+正文以英文为主，重要教材术语同时保留中文对照。

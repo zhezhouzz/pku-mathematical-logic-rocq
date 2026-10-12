@@ -1,9 +1,10 @@
-(** * 教材习题二（pp. 98--104）
+(** * Chapter 2 Exercises / 教材习题二 (pp. 98--104)
 
-    本文件按教材编号组织。证明题以 [Goal ... Abort.] 保留给学生；
-    计算题可以逐句执行 [Compute]。第 1、5--8、21--28、30--32 题
-    主要是自然语言符号化、函数完全集、范式或开放讨论题，列在相应
-    注释中，不伪装成已经证明的 Rocq 定理。 *)
+    The worksheet follows the textbook numbering.  Proof goals ending in
+    [Abort] are intentionally left to students, while [Compute] commands can be
+    executed sentence by sentence.  Problems about symbolization, functional
+    completeness, normal forms, and open metatheory remain paper exercises
+    rather than pretending to be completed Rocq theorems. *)
 
 From Stdlib Require Import String List Bool.
 From stdpp Require Import gmap.
@@ -23,7 +24,9 @@ Definition pC : pformula := PAtom "C".
 (** 1. 将六个自然语言命题符号化：否定合取、析取、充分条件、
     必要条件、"除非"以及奇偶性充要条件。课堂上先确定原子命题。 *)
 
-(** 2. 写真值表。 *)
+(** **** Exercise: 1 star, standard (chapter2_truth_tables)
+
+    Problem 2: write and inspect the following truth tables. *)
 Compute printTruthTable ((¬ ep) ∧ (¬ eq)).
 Compute printTruthTable ((ep → eq) → er).
 Compute printTruthTable (ep → (eq → er)).
@@ -53,7 +56,9 @@ Definition n_equivalent (A B : formula) : Prop :=
 Section NExercises.
   Variables A B C D E T : formula.
 
-  (** 11. 六组经典等值式。 *)
+(** **** Exercise: 2 stars, standard (chapter2_N_equivalences)
+
+      Problem 11: six classical equivalences in system N. *)
   Goal n_equivalent (A ∨ (B ∧ C)) ((A ∨ B) ∧ (A ∨ C)). Abort.
   Goal n_equivalent (A ∧ (B ∨ C)) ((A ∧ B) ∨ (A ∧ C)). Abort.
   Goal n_equivalent (A → (B ∧ C)) ((A → B) ∧ (A → C)). Abort.
@@ -104,7 +109,9 @@ Open Scope P_scope.
 Section PExercises.
   Variables A B C D : pformula.
 
-  (** 14. 直接写出四个 P 证明序列。 *)
+  (** **** Exercise: 2 stars, standard (chapter2_P_sequences)
+
+      Problem 14: construct four explicit P proof sequences. *)
   Goal (∅ : PContext) ⊢ₚ ((A → B) → ((¬ A → ¬ B) → (B → A))). Abort.
   Goal (∅ : PContext) ⊢ₚ
     (((A → (B → C)) → (A → B)) → ((A → (B → C)) → (A → C))). Abort.
@@ -136,7 +143,9 @@ End PExercises.
     27：由书中推论 2.10 推定理 2.30。
     28：证明 P 的可靠性。 *)
 
-(** 29. 判断下列公式是否为 P 的内定理。先跑真值表作语义检查，
+(** **** Exercise: 2 stars, standard (chapter2_P_validity)
+
+    Problem 29. 判断下列公式是否为 P 的内定理。先跑真值表作语义检查，
     随后对有效式构造 P 证明，对无效式写出反指派。 *)
 Compute isValid (p_to_n ((pA → (¬ pA)) → (¬ pA))).
 Compute isValid (p_to_n (((¬ pA) → pB) → (pA → (¬ pB)))).

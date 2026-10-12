@@ -91,6 +91,13 @@
     "slug": "PropositionalConnections"
   },
   {
+    "source": "theories/Exercises/Chapter2.v",
+    "title": "Chapter 2 Exercises",
+    "part": "Propositional Logic",
+    "textbook": "Exercises 2, pages 98--104",
+    "slug": "Chapter2Exercises"
+  },
+  {
     "source": "theories/FirstOrder/Syntax.v",
     "title": "First-Order Syntax",
     "part": "First-Order Logic",
@@ -131,5 +138,19 @@
     "part": "First-Order Logic",
     "textbook": "Sections 3.7--3.8",
     "slug": "FirstOrderMetatheory"
+  },
+  {
+    "source": "theories/Exercises/Chapter3.v",
+    "title": "Chapter 3 Exercises",
+    "part": "First-Order Logic",
+    "textbook": "Exercises 3, pages 183--187",
+    "slug": "Chapter3Exercises"
+  },
+  {
+    "source": "theories/Book/NotationAndImplementation.v",
+    "title": "Notation and Implementation Reference",
+    "part": "Appendices",
+    "textbook": "Course reference",
+    "slug": "NotationReference"
   }
 ]

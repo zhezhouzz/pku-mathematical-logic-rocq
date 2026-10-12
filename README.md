@@ -224,6 +224,44 @@ Set **VSRocq: Path** (`vsrocq.path`) in the workspace settings to that absolute
 path, restart VS Code, and use the same **Interpret to Point**, **Step Forward**,
 and **Step Backward** commands described above.
 
+## Executable Online Textbook
+
+The same `.v` files used in VSRocq are published as an executable textbook at
+[zhezhouzz.github.io/pku-mathematical-logic-rocq](https://zhezhouzz.github.io/pku-mathematical-logic-rocq/).
+The site follows Sections 1.1--3.8 of Wang's textbook, adds a minimal Rocq
+primer, and links every chapter back to its downloadable source.
+
+To build and preview the website locally with the pinned Docker toolchain:
+
+```console
+make docker-shell
+make html-check
+exit
+python3 -m http.server 8000 --directory _site
+```
+
+Then open `http://localhost:8000` from the host. The container writes `_site/`
+through the bind mount, while the host serves it without requiring container
+port forwarding. With a native Rocq installation, the equivalent shorter
+command is:
+
+```console
+make html-check && make serve
+```
+
+The main publishing targets are:
+
+```console
+make book        # compile every core, chapter, example, exercise, and test file
+make core-check  # reject admissions or axioms in the trusted teaching library
+make html        # generate the static website in _site/
+make html-check  # build and validate the manifest, pages, and local links
+make html-clean  # remove generated website files
+```
+
+GitHub Actions validates the site for pull requests and deploys it to GitHub
+Pages after changes reach `main`. Generated HTML is never committed.
+
 ## Project Overview
 
 The library is deliberately small. It exposes object-language syntax,
@@ -254,6 +292,8 @@ aim to be a comprehensive metatheory library.
 
 ```text
 theories/
+├── Book/                 # preface, Rocq primer, roadmap, reference
+├── Preliminaries/        # executable Chapter 1 material
 ├── Tactics.v
 ├── Propositional/
 │   ├── Syntax.v
@@ -267,7 +307,9 @@ theories/
 │   ├── NaturalDeduction.v
 │   └── Hilbert.v
 ├── Examples/
-└── Exercises/
+├── Exercises/
+├── Solutions/            # selected public solutions only
+└── Tests/                # stable teaching-interface checks
 ```
 
 - `Propositional/Syntax.v` defines formulas, complexity, depth, variables, and
@@ -285,9 +327,15 @@ theories/
 - `FirstOrder/NaturalDeduction.v` and `FirstOrder/Hilbert.v` define systems
   N<sub>L</sub> and K<sub>L</sub>.
 - `Tactics.v` provides small tactics for normalizing finite-set contexts.
+- `Book/` and `Preliminaries/` provide the introductory and Chapter 1 material.
 - `Examples/` contains scripts intended for line-by-line classroom execution.
 - `Exercises/` contains worksheets and solutions organized around Chapters 2
-  and 3 of the textbook.
+  and 3 of the textbook; complete solutions are not published there.
+- `Solutions/Selected.v` demonstrates representative proof styles, and
+  `Tests/` checks that public teaching interfaces remain stable.
+- `site/chapters.json` is the single source of truth for the online reading
+  order; `tools/build_site.py` generates navigation, indexes, assets, and
+  source downloads.
 - `Dockerfile` and `.dockerignore` define the reproducible container build;
   `Makefile` provides both native and Docker entry points.
 - [`TEXTBOOK_COVERAGE.md`](TEXTBOOK_COVERAGE.md) maps textbook sections,
