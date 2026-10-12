@@ -1,0 +1,73 @@
+:root {
+  --ink: #20242c;
+  --muted: #626a78;
+  --paper: #fbfaf6;
+  --panel: #f1f4f7;
+  --accent: #8b1e3f;
+  --accent-soft: #f4e8ec;
+  --line: #d9dde3;
+  --code: #17202a;
+}
+
+html { background: var(--paper); }
+body {
+  color: var(--ink);
+  background: var(--paper);
+  font-family: "Iowan Old Style", "Noto Serif", "Noto Serif CJK SC", Georgia, serif;
+  line-height: 1.65;
+  margin: 0 auto;
+  max-width: 72rem;
+  padding: 0 2rem 4rem;
+}
+a { color: var(--accent); }
+#course-nav {
+  align-items: center;
+  border-bottom: 1px solid var(--line);
+  display: flex;
+  font-family: system-ui, sans-serif;
+  gap: 1rem;
+  justify-content: space-between;
+  margin: 0 -2rem 2rem;
+  padding: 0.8rem 2rem;
+}
+#course-nav .course-title { font-weight: 700; }
+#course-nav .chapter-links { display: flex; gap: 1rem; }
+#page, #main { max-width: none; width: auto; }
+h1, h2, h3, h4 { color: #161a20; line-height: 1.25; }
+h1 { border-bottom: 3px solid var(--accent); padding-bottom: 0.35rem; }
+div.code, pre, code { font-family: "SFMono-Regular", Consolas, monospace; }
+div.code {
+  background: white;
+  border: 1px solid var(--line);
+  border-left: 4px solid var(--accent);
+  border-radius: 0.3rem;
+  color: var(--code);
+  overflow-x: auto;
+  padding: 0.8rem 1rem;
+}
+span.inlinecode { background: var(--panel); border-radius: 0.2rem; padding: 0.08rem 0.25rem; }
+details.course-proof, details.optional-section {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 0.3rem;
+  margin: 0.8rem 0;
+  padding: 0.45rem 0.75rem;
+}
+details summary { cursor: pointer; font-family: system-ui, sans-serif; font-weight: 650; }
+.book-home { max-width: 62rem; margin: auto; }
+.book-meta { color: var(--muted); font-family: system-ui, sans-serif; }
+.part { margin-top: 2.2rem; }
+.chapter-card {
+  border-top: 1px solid var(--line);
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: 1fr auto;
+  padding: 0.8rem 0;
+}
+.chapter-card small { color: var(--muted); }
+footer.course-footer { border-top: 1px solid var(--line); color: var(--muted); margin-top: 3rem; padding-top: 1rem; }
+@media (max-width: 700px) {
+  body { padding: 0 1rem 3rem; }
+  #course-nav { align-items: flex-start; flex-direction: column; margin: 0 -1rem 1.5rem; padding: 0.8rem 1rem; }
+  .chapter-card { grid-template-columns: 1fr; gap: 0.2rem; }
+}

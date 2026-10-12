@@ -1,4 +1,5 @@
-.PHONY: build configure ide devcontainer-ide clean repl docker-build docker-check docker-shell
+.PHONY: build book core-check configure ide devcontainer-ide clean repl \
+	html html-check html-clean serve docker-build docker-check docker-shell
 
 OPAM ?= opam
 OPAM_SWITCH ?=
@@ -20,6 +21,33 @@ ide: configure
 
 build: ide
 
+# The book target is intentionally the same checked compilation as [build]:
+# every literate chapter is listed in [_RocqProject].  Keeping a separate name
+# makes the publishing workflow and the student-facing command self-documenting.
+book: build core-check
+
+# Exercise templates may contain [Admitted], but the trusted teaching library
+# and completed examples must not.
+core-check:
+	@if rg -n '(^|[[:space:]])(Admitted|admit|Axiom)([[:space:].]|$$)' \
+	  theories/Book theories/Preliminaries theories/Propositional \
+	  theories/FirstOrder theories/Examples theories/Tactics.v; then \
+		echo "Unexpected admission or axiom in the trusted teaching library."; \
+		exit 1; \
+	fi
+
+html: book
+	$(OPAM_EXEC) python3 tools/build_site.py build
+
+html-check: html
+	$(OPAM_EXEC) python3 tools/build_site.py check
+
+html-clean:
+	$(RM) -r _site
+
+serve: html
+	python3 -m http.server 8000 --directory _site
+
 # A bind-mounted workspace may contain .vo files produced by another OCaml
 # toolchain. Test a central library before starting VSRocq, and rebuild only
 # when the existing object files cannot be loaded by this container.
@@ -35,6 +63,7 @@ devcontainer-ide:
 clean: configure
 	$(OPAM_EXEC) $(MAKE) -f RocqMakefile clean
 	$(RM) RocqMakefile RocqMakefile.conf .RocqMakefile.d
+	$(RM) -r _site
 
 repl:
 	$(OPAM_EXEC) rocq repl -Q theories LogicCourse

@@ -4,6 +4,7 @@
 _build
 _opam
 tmp
+_site
 
 *.aux
 *.glob

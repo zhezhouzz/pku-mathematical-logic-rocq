@@ -1,0 +1,86 @@
+[
+  {
+    "source": "theories/Book/Preface.v",
+    "title": "Preface",
+    "part": "Getting Started",
+    "textbook": "Course guide",
+    "slug": "Preface"
+  },
+  {
+    "source": "theories/Book/RocqPrimer.v",
+    "title": "A Minimal Rocq Primer",
+    "part": "Getting Started",
+    "textbook": "Rocq prerequisite",
+    "slug": "RocqPrimer"
+  },
+  {
+    "source": "theories/Book/Roadmap.v",
+    "title": "Course Roadmap",
+    "part": "Getting Started",
+    "textbook": "Chapters 1--3",
+    "slug": "Roadmap"
+  },
+  {
+    "source": "theories/Propositional/Syntax.v",
+    "title": "Propositional Syntax",
+    "part": "Propositional Logic",
+    "textbook": "Section 2.1",
+    "slug": "PropositionalSyntax"
+  },
+  {
+    "source": "theories/Propositional/Semantics.v",
+    "title": "Truth-Table Semantics",
+    "part": "Propositional Logic",
+    "textbook": "Sections 2.2--2.3",
+    "slug": "PropositionalSemantics"
+  },
+  {
+    "source": "theories/Propositional/NaturalDeduction.v",
+    "title": "Formal Derivations and System N",
+    "part": "Propositional Logic",
+    "textbook": "Sections 2.4--2.5",
+    "slug": "SystemN"
+  },
+  {
+    "source": "theories/Propositional/DerivedRules.v",
+    "title": "Derived Rules of N",
+    "part": "Propositional Logic",
+    "textbook": "Section 2.5",
+    "slug": "DerivedRules"
+  },
+  {
+    "source": "theories/Propositional/Hilbert.v",
+    "title": "System P",
+    "part": "Propositional Logic",
+    "textbook": "Section 2.6",
+    "slug": "SystemP"
+  },
+  {
+    "source": "theories/FirstOrder/Syntax.v",
+    "title": "First-Order Syntax",
+    "part": "First-Order Logic",
+    "textbook": "Sections 3.1--3.2",
+    "slug": "FirstOrderSyntax"
+  },
+  {
+    "source": "theories/FirstOrder/NaturalDeduction.v",
+    "title": "System N_L",
+    "part": "First-Order Logic",
+    "textbook": "Section 3.3",
+    "slug": "SystemNL"
+  },
+  {
+    "source": "theories/FirstOrder/Hilbert.v",
+    "title": "System K_L",
+    "part": "First-Order Logic",
+    "textbook": "Section 3.4",
+    "slug": "SystemKL"
+  },
+  {
+    "source": "theories/FirstOrder/Semantics.v",
+    "title": "First-Order Semantics",
+    "part": "First-Order Logic",
+    "textbook": "Section 3.6",
+    "slug": "FirstOrderSemantics"
+  }
+]

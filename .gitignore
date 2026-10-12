@@ -10,3 +10,4 @@ RocqMakefile
 RocqMakefile.conf
 .RocqMakefile.d
 tmp/
+_site/

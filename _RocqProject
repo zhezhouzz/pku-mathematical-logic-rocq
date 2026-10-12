@@ -3,6 +3,9 @@
 -arg "-w notation-overridden"
 
 theories/Tactics.v
+theories/Book/Preface.v
+theories/Book/RocqPrimer.v
+theories/Book/Roadmap.v
 theories/Propositional/Syntax.v
 theories/Propositional/Semantics.v
 theories/Propositional/NaturalDeduction.v
